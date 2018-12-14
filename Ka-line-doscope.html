@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ka-line-doscope</title>
+    <script src="p5.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  .center
+  {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .slidecontainer {
+      width: 50%;
+  }
+
+  .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 15px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+  }
+
+  .slider:hover {
+      opacity: 1;
+  }
+
+  .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+  }
+
+  .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+  }
+
+</style>
+</head>
+
+<body>
+
+<h1>Ka-line-doscope</h1>
+
+Press and hold the mouse down on the canvas and have fun!<br><br>
+
+<button type="button" id="Reset" onClick="reset()">Reset</button>
+</form><br><br>
+
+Resize the circles:
+
+<div class="slidecontainer">
+    <input type="range" min="1" max="50" value="25" class="slider" id="colorScheme">
+    <p>Size: <span id="colorNo"></span></p>
+</div>
+
+<input type="checkbox" id="outline">
+<button onclick="check()">Outline</button>
+<button onclick="uncheck()">No Outline</button>
+</form><br><br>
+
+<script>
+  "use strict";
+
+var canvasWidth  = 700;
+var canvasHeight = 700;
+var circleSizeW = 25;
+var circleSizeH = 25;
+var slider = document.getElementById("colorScheme");
+var output = document.getElementById("colorNo");
+var colorScheme = 100;
+
+function reset ()
+{
+    background(0, 0, 0);
+
+    document.getElementById("outline").checked = true;
+
+    document.getElementById("colorScheme").value = "25";
+
+    circleSizeW = 25;
+
+    circleSizeH = 25;
+}
+
+
+output.innerHTML = slider.value;
+
+slider.oninput = function()
+{
+    output.innerHTML = this.value;
+};
+
+
+function check()
+{
+    document.getElementById("outline").checked = true;
+}
+
+function uncheck()
+{
+    document.getElementById("outline").checked = false;
+}
+
+
+//=============================================================================================
+// Called by p5.js once when the page loads
+//=============================================================================================
+function setup()
+{
+  createCanvas(canvasWidth, canvasHeight);
+
+  document.getElementById("outline").checked = true;
+
+  background(0, 0, 0);
+}
+
+//=================================================================================
+// Called by p5.js 60 times per second.
+//=================================================================================
+function draw()
+{
+
+  if (document.getElementById("outline").checked)
+  {
+      strokeWeight(1);
+  }
+
+  else
+  {
+      strokeWeight(0);
+  }
+
+  if(mouseIsPressed)
+  {
+      //light blue ellipse second for blue main
+      fill(mouseX, mouseY, colorScheme + 140);
+      ellipse(mouseX-10, mouseY-5, circleSizeW, circleSizeH);
+
+      //blue ellipse main
+      fill(mouseX, mouseY, colorScheme + 142);
+      ellipse(mouseX, mouseY, circleSizeW, circleSizeH);
+
+      //upper left corner
+      fill(mouseX, mouseY, colorScheme - 92);
+      triangle(canvasWidth - 10, canvasWidth, mouseX, mouseY, canvasHeight, canvasHeight - 10);
+      triangle(canvasWidth - 10, 0, mouseX, mouseY, canvasHeight, 10);
+
+      //yellow ellipse second for green main
+      fill(mouseX, mouseY, colorScheme - 84);
+      ellipse(mouseY-10, mouseX-10, circleSizeW, circleSizeH);
+
+      //green ellipse main
+      fill(mouseX, mouseY, colorScheme - 100);
+      ellipse(mouseY, mouseX, circleSizeW, circleSizeH);
+
+      //lower right corner
+      fill(mouseX, mouseY, colorScheme + 140);
+      triangle(0, 10, mouseY, mouseX, 10, 0);
+      triangle(10, canvasWidth, mouseY, mouseX, 0, canvasHeight - 10);
+  }
+
+}
+
+
+</script>
+
+</div>
+</body>
+</html>
